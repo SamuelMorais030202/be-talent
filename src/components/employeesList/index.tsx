@@ -2,18 +2,10 @@ import { useState } from "react";
 import { formatPhoneNumber } from "@/utils/formatPhoneNumber";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { ChevronDown, ChevronUp } from "lucide-react";
-
-interface IEmployeesResponse {
-  id: number;
-  name: string;
-  job: string;
-  admission_date: string;
-  phone: string;
-  image: string;
-}
+import { IEmployee } from "@/types/employee";
 
 interface EmployeesListProps {
-  employees: IEmployeesResponse[];
+  employees: IEmployee[];
 }
 
 export function EmployeesList({ employees }: EmployeesListProps) {

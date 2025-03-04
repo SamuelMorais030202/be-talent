@@ -3,18 +3,10 @@ import { Header } from "./components/header"
 import { api } from "./services/api"
 import { useEffect, useState } from "react"
 import { EmployeesList } from "./components/employeesList"
-
-interface IEmployeesResponse {
-  id: 1
-  name: string
-  job: string
-  admission_date: string
-  phone: string
-  image: string
-}
+import { IEmployee } from "./types/employee"
 
 export function App() {
-  const [employees, setEmploees] = useState<IEmployeesResponse[] | null>(null)
+  const [employees, setEmploees] = useState<IEmployee[] | null>(null)
   const [search, setSearch] = useState("");
 
   async function fetchEmployees() {
