@@ -37,10 +37,10 @@ export function App() {
       <Header />
 
       <main className="w-11/12 mx-auto mt-8">
-        <section className="flex justify-between items-center flex-wrap">
+        <section className="flex justify-between items-center flex-wrap gap-4">
           <h1 className="text-xl font-medium text-[#1C1C1C]">Funcionários</h1>
 
-          <div className="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2 shadow-sm">
+          <div className="flex items-center bg-white border border-gray-300 rounded-md px-3 py-2 shadow-sm h-12 w-full md:w-72">
             <input
               type="text"
               placeholder="Pesquisar"
