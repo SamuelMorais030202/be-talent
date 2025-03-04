@@ -16,6 +16,7 @@ interface IEmployeesResponse {
 
 export function App() {
   const [employees, setEmploees] = useState<IEmployeesResponse[] | null>(null)
+  const [search, setSearch] = useState("");
 
   async function fetchEmployees() {
     const response = await api.get('/employees')
@@ -25,6 +26,12 @@ export function App() {
   useEffect(() => {
     fetchEmployees()
   }, [])
+
+  const filteredEmployees = employees?.filter((employee) =>
+    employee.name.toLowerCase().includes(search.toLowerCase())
+    || employee.job.toLowerCase().includes(search.toLowerCase())
+    || employee.phone.includes(search)
+  );
 
   return (
     <>
@@ -38,6 +45,8 @@ export function App() {
             <input
               type="text"
               placeholder="Pesquisar"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
               className="outline-none text-gray-700 placeholder-gray-400 bg-transparent w-full"
             />
 
@@ -59,41 +68,41 @@ export function App() {
             </TableHeader>
 
             <TableBody>
-              {employees?.map((employee) => (
-                <TableRow key={employee.id}>
-                  <TableCell>
-                    <img
-                      src={employee.image}
-                      alt={`Funcionário(a) ${employee.name}`}
-                      className="size-8 rounded-full ml-2"
-                    />
-                  </TableCell>
+              {filteredEmployees && filteredEmployees.length > 0 ? (
+                filteredEmployees.map((employee) => (
+                  <TableRow key={employee.id} className="bg-white">
+                    <TableCell>
+                      <img
+                        src={employee.image}
+                        alt={`Funcionário(a) ${employee.name}`}
+                        className="size-8 rounded-full ml-2"
+                      />
+                    </TableCell>
 
-                  <TableCell
-                    className="font-normal text-base text-[#1C1C1C]"
-                  >
-                    {employee.name}
-                  </TableCell>
+                    <TableCell className="font-normal text-base text-[#1C1C1C]">
+                      {employee.name}
+                    </TableCell>
 
-                  <TableCell
-                    className="font-normal text-base text-[#1C1C1C]"
-                  >
-                    {employee.job}
-                  </TableCell>
+                    <TableCell className="font-normal text-base text-[#1C1C1C]">
+                      {employee.job}
+                    </TableCell>
 
-                  <TableCell
-                    className="font-normal text-base text-[#1C1C1C]"
-                  >
-                    {new Intl.DateTimeFormat("pt-BR").format(new Date(employee.admission_date))}
-                  </TableCell>
+                    <TableCell className="font-normal text-base text-[#1C1C1C]">
+                      {new Intl.DateTimeFormat("pt-BR").format(new Date(employee.admission_date))}
+                    </TableCell>
 
-                  <TableCell
-                    className="font-normal text-base text-[#1C1C1C]"
-                  >
-                    {formatPhoneNumber(employee.phone)}
+                    <TableCell className="font-normal text-base text-[#1C1C1C]">
+                      {formatPhoneNumber(employee.phone)}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-4 text-gray-500">
+                    Nenhum funcionário encontrado.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </section>
