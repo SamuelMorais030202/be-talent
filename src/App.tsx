@@ -1,13 +1,25 @@
 import { Search } from "lucide-react"
 import { Header } from "./components/header"
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "./components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./components/ui/table"
 import { api } from "./services/api"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { formatPhoneNumber } from "./utils/formatPhoneNumber"
+
+interface IEmployeesResponse {
+  id: 1
+  name: string
+  job: string
+  admission_date: string
+  phone: string
+  image: string
+}
 
 export function App() {
+  const [employees, setEmploees] = useState<IEmployeesResponse[] | null>(null)
+
   async function fetchEmployees() {
     const response = await api.get('/employees')
-    console.log(response.data)
+    setEmploees(response.data)
   }
 
   useEffect(() => {
@@ -34,7 +46,7 @@ export function App() {
 
         </section>
 
-        <section className="mt-8">
+        <section className="mt-8 mb-6">
           <Table>
             <TableHeader className="bg-[#0500FF]">
               <TableRow className="px-2 hover:bg-[#0500FF]">
@@ -46,7 +58,43 @@ export function App() {
               </TableRow>
             </TableHeader>
 
-            <TableBody></TableBody>
+            <TableBody>
+              {employees?.map((employee) => (
+                <TableRow key={employee.id}>
+                  <TableCell>
+                    <img
+                      src={employee.image}
+                      alt={`Funcionário(a) ${employee.name}`}
+                      className="size-8 rounded-full ml-2"
+                    />
+                  </TableCell>
+
+                  <TableCell
+                    className="font-normal text-base text-[#1C1C1C]"
+                  >
+                    {employee.name}
+                  </TableCell>
+
+                  <TableCell
+                    className="font-normal text-base text-[#1C1C1C]"
+                  >
+                    {employee.job}
+                  </TableCell>
+
+                  <TableCell
+                    className="font-normal text-base text-[#1C1C1C]"
+                  >
+                    {new Intl.DateTimeFormat("pt-BR").format(new Date(employee.admission_date))}
+                  </TableCell>
+
+                  <TableCell
+                    className="font-normal text-base text-[#1C1C1C]"
+                  >
+                    {formatPhoneNumber(employee.phone)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           </Table>
         </section>
       </main>
