@@ -121,6 +121,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+body {
+  background: #F0F0F0
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
